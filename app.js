@@ -11,7 +11,21 @@ app.set("view engine","ejs");
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
+require('dotenv').config(); // This is a another mathod to access the .env variables declared anywhere and other is create config file
+
 const db = require('./config/mongoose-connect');
+
+const expressSession = require('express-session');
+
+const flash = require('connect-flash');
+// To flash we need to create sessions
+app.use(expressSession({
+    resave:false, // dont sava again and again if it is not getting saved
+    saveUninitialized:false, // Dont create new users session
+    secret:process.env.EXPRESS_SESSION_SECRET
+})
+);
+app.use(flash()); // flash - by using flash we can create message at any page and can carry that message to next page
 
 const ownersRouter = require('./routes/ownersRouter');
 const productsRouter = require('./routes/productsRouter');
