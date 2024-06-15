@@ -26,7 +26,7 @@ const registerUsers = async (req, res) => {
                         // Setting cookie for authentication of user using jwt
                         let userToken = generateTokens(user);
                         res.cookie("Token", userToken);
-                        res.send("User Created Successfully " + user);
+                        // res.render('shop');
                     }
                 });
             });
@@ -51,7 +51,7 @@ const userLogin = async (req, res) => {
         if(result){
             let userToken = generateTokens(user);
             res.cookie("Token",userToken);
-            res.send("Token set successfully");
+            res.redirect('/shop');
         }
         // if Email & password is wrong
         else {
@@ -61,4 +61,9 @@ const userLogin = async (req, res) => {
     
 }
 
-module.exports = { registerUsers, userLogin };
+const logout = (req,res)=>{
+    res.cookie("Token","");
+    res.redirect('/');
+}
+
+module.exports = { registerUsers, userLogin, logout };
